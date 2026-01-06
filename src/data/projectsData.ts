@@ -21,8 +21,8 @@ export const Projects: Project[] = [
     description:
       "Desarrollo de una experiencia de usuario responsiva para e-commerce, incluyendo gestión de carrito, validaciones de formularios y proceso de compra integrado.",
     techs: ["HTML", "CSS", "JavaScript"],
-    github: "https://github.com/mugclub.git",
-    demo: "https://mugclub-demo.com/",
+    github: "https://github.com/Julianabonet15/Proyectom4Vercel",
+    demo: "https://themugclub-seven.vercel.app/",
     images: [
       "/images/mugclub.png",
       "/images/themugclub.card.png",

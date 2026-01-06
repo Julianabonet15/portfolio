@@ -1,36 +1,56 @@
 import Link from "next/link"
+import { Github, Linkedin, Instagram, MessageCircle } from "lucide-react"
 
 export default function Footer() {
   return (
-   <footer className="mt-32 bg-[var(--navbar-bg)] border-t border-[var(--border)]">
+    <footer className="mt-16 border-t border-[var(--border)]">
 
-      <div className="max-w-6xl mx-auto px-5 py-6 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-sm text-[var(--text-secondary)]">
+      <div className="max-w-6xl mx-auto px-5 py-6 flex flex-col items-center gap-4">
 
-        {/* Nombre */}
-        <p>
-          © {new Date().getFullYear()} Juliana Bonet
-        </p>
 
-        {/* Links */}
+        {/* ICONOS */}
         <div className="flex gap-6">
-          <a
+          <Link
             href="https://github.com/Julianabonet15"
             target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[var(--text-main)] transition"
+            aria-label="GitHub"
+            className="hover:opacity-70 transition"
           >
-            GitHub
-          </a>
+            <Github size={22} />
+          </Link>
 
-          <a
-            href="https://linkedin.com/in/juliana-bonet"
+          <Link
+            href="https://www.linkedin.com/in/juliana-bonet"
             target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[var(--text-main)] transition"
+            aria-label="LinkedIn"
+            className="hover:opacity-70 transition"
           >
-            LinkedIn
-          </a>
+            <Linkedin size={22} />
+          </Link>
+
+          <Link
+            href="https://www.instagram.com/juli.bonet/"
+            target="_blank"
+            aria-label="Instagram"
+            className="hover:opacity-70 transition"
+          >
+            <Instagram size={22} />
+          </Link>
+
+          <Link
+            href="https://wa.me/5492477345930"
+            target="_blank"
+            aria-label="WhatsApp"
+            className="hover:opacity-70 transition"
+          >
+            <MessageCircle size={22} />
+          </Link>
         </div>
+
+        {/* TEXTO */}
+        <p className="text-xs text-[var(--text-secondary)]">
+          © {new Date().getFullYear()} Juliana Bonet
+        </p>
       </div>
     </footer>
   )

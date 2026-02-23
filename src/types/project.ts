@@ -1,10 +1,12 @@
 export interface Project {
-  id: string 
+  id: string
   title: string
-  description: string
+  description: {
+    es: string
+    en: string
+  }
   techs: string[]
-  github?: string
+  githubUrl?: string
   demo?: string
   images?: string[]
-    
 }

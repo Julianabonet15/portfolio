@@ -35,7 +35,7 @@ export default function ProjectCard({ project }: Props) {
               src={project.images[0]}
               alt={project.title}
               fill
-              className="object-contain transition-transform duration-500 group-hover:scale-105"
+             className={`${project.objectFit === "cover" ? "object-cover" : "object-contain"} transition-transform duration-500 group-hover:scale-105`}
             />
           </div>
 

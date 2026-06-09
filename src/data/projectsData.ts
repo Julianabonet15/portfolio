@@ -33,4 +33,20 @@ export const Projects: Project[] = [
       "/images/themugclub.login.png",
     ],
   },
+  {
+  id: "3",
+  title: "La Bianqueria",
+  description: {
+    es: "Sistema POS y control de stock para una mercería en Argentina. Diseñado para operar offline en el local, incluye gestión de productos con variantes (talle, color), historial de ventas, manejo de caja y facturación electrónica integrada con AFIP.",
+    en: "POS system and inventory management for a retail haberdashery in Argentina. Designed to run offline on a single local machine, featuring product and variant management (size, color), sales history, cash register control, and electronic invoicing integrated with AFIP.",
+  },
+  techs: ["Next.js 15", "TypeScript", "Prisma", "SQLite", "Tailwind", "Zod"],
+  demo: "https://bianqueria.xavier.com.ar/login",
+  images: [
+    "/images/b1.png",
+    "/images/b2.png",
+    "/images/b3.png",
+  ],
+  objectFit: "cover",
+},
 ]

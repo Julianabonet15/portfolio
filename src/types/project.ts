@@ -9,4 +9,5 @@ export interface Project {
   githubUrl?: string
   demo?: string
   images?: string[]
+  objectFit?: "cover" | "contain" 
 }

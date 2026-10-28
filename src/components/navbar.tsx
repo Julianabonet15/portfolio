@@ -1,84 +1,113 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Moon, Sun, Languages } from "lucide-react"
+import { Moon, Sun, Languages, Menu, X } from "lucide-react"
 import { useApp } from "@/context/AppContext"
+
+const LINKS = [
+  { id: "proyectos", key: "nav.projects" },
+  { id: "sobre-mi", key: "nav.about" },
+  { id: "contacto", key: "nav.contact" },
+]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [active, setActive] = useState("")
   const { theme, toggleTheme, lang, toggleLang, t } = useApp()
 
-  return (
-    <header className="w-full bg-[var(--navbar-bg)] border-b border-[var(--border)] fixed top-0 z-50 transition-colors duration-300">
-      <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+  // Barra de progreso de scroll y sección activa
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(max > 0 ? window.scrollY / max : 0)
 
-        {/* Logo */}
+      const current = LINKS.findLast(({ id }) => {
+        const el = document.getElementById(id)
+        return el && el.getBoundingClientRect().top < window.innerHeight * 0.4
+      })
+      setActive(current?.id ?? "")
+    }
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  return (
+    <header className="fixed top-0 inset-x-0 z-50 px-4 pt-4">
+      <nav className="relative max-w-4xl mx-auto flex items-center justify-between rounded-full border border-[var(--border)] bg-[var(--navbar-bg)] backdrop-blur-xl px-5 py-2.5 shadow-lg shadow-black/5 overflow-hidden">
+
+        {/* Progreso de scroll */}
+        <span
+          aria-hidden
+          className="absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)]"
+          style={{ width: `${progress * 100}%` }}
+        />
+
         <Link href="/" className="text-base font-semibold tracking-tight">
-          Juli Bonet
+          Juliana Bonet
         </Link>
 
         {/* Desktop */}
-        <ul className="hidden md:flex items-center gap-8 text-sm text-[var(--text-secondary)]">
-          <li>
-            <Link href="#proyectos" className="hover:text-[var(--foreground)] transition">
-              {t("nav.projects")}
-            </Link>
-          </li>
-          <li>
-            <Link href="#sobre-mi" className="hover:text-[var(--foreground)] transition">
-              {t("nav.about")}
-            </Link>
-          </li>
-
-          {/* Separador */}
-          <li className="w-px h-4 bg-[var(--border)]" />
-
-          {/* Idioma */}
-          <li>
-            <button
-              onClick={toggleLang}
-              className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--foreground)] transition"
-              aria-label="Cambiar idioma"
-            >
-              <Languages size={15} />
-              {lang === "es" ? "EN" : "ES"}
-            </button>
-          </li>
-
-          {/* Tema */}
-          <li>
-            <button
-              onClick={toggleTheme}
-              className="text-[var(--text-secondary)] hover:text-[var(--foreground)] transition"
-              aria-label="Cambiar tema"
-            >
-              {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
-          </li>
+        <ul className="hidden md:flex items-center gap-1 text-sm">
+          {LINKS.map(({ id, key }) => (
+            <li key={id}>
+              <Link
+                href={`/#${id}`}
+                className={`px-4 py-1.5 rounded-full transition-colors ${
+                  active === id
+                    ? "bg-[var(--foreground)] text-[var(--background)]"
+                    : "text-[var(--text-secondary)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                {t(key)}
+              </Link>
+            </li>
+          ))}
         </ul>
 
-        {/* Mobile: íconos + hamburguesa */}
-        <div className="flex md:hidden items-center gap-4">
-          <button onClick={toggleLang} className="text-[var(--text-secondary)]" aria-label="Idioma">
-            <Languages size={17} />
+        <div className="flex items-center gap-1">
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1 text-xs font-semibold px-2.5 py-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition"
+            aria-label="Cambiar idioma"
+          >
+            <Languages size={15} />
+            {lang === "es" ? "EN" : "ES"}
           </button>
-          <button onClick={toggleTheme} className="text-[var(--text-secondary)]" aria-label="Tema">
-            {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition hover:rotate-45"
+            aria-label="Cambiar tema"
+          >
+            {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
           </button>
-          <button onClick={() => setOpen(!open)} className="text-xl" aria-label="Abrir menú">
-            {open ? "✕" : "☰"}
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden p-2 rounded-full hover:bg-[var(--border)] transition"
+            aria-label="Abrir menú"
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </nav>
 
       {/* Menú mobile */}
       {open && (
-        <div className="md:hidden border-t border-[var(--border)] bg-[var(--navbar-bg)]">
-          <ul className="flex flex-col px-6 py-4 gap-4 text-sm">
-            <li><Link href="#proyectos" onClick={() => setOpen(false)}>{t("nav.projects")}</Link></li>
-            <li><Link href="#sobre-mi" onClick={() => setOpen(false)}>{t("nav.about")}</Link></li>
-            <li><Link href="#contacto" onClick={() => setOpen(false)}>{t("nav.contact")}</Link></li>
+        <div className="md:hidden max-w-4xl mx-auto mt-2 rounded-3xl border border-[var(--border)] bg-[var(--navbar-bg)] backdrop-blur-xl animate-fade-up">
+          <ul className="flex flex-col p-3 text-lg font-[family-name:var(--font-playfair)] font-semibold">
+            {LINKS.map(({ id, key }) => (
+              <li key={id}>
+                <Link
+                  href={`/#${id}`}
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-3 rounded-2xl hover:bg-[var(--border)] transition"
+                >
+                  {t(key)}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       )}

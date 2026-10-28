@@ -2,6 +2,7 @@ import "./globals.css"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { AppProvider } from "@/context/AppContext"
+import CursorGlow from "@/components/CursorGlow"
 import { Playfair_Display, Inter } from "next/font/google"
 import type { Metadata } from "next"
 
@@ -63,9 +64,12 @@ export default function RootLayout({
       </head>
       <body>
         <AppProvider>
+          <CursorGlow />
           <Navbar />
-          {children}
-          <Footer />
+          <div className="relative z-10">
+            {children}
+            <Footer />
+          </div>
         </AppProvider>
       </body>
     </html>

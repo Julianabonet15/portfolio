@@ -2,35 +2,46 @@
 
 :root {
   --background: #faf9f7;
-  --navbar-bg: #f1ece6;
+  --navbar-bg: rgba(241, 236, 230, 0.85);
   --card-bg: #f7f3ed;
   --foreground: #2b2b2b;
   --text-secondary: #6b6b6b;
   --border: #e2ddd6;
   --accent: #b07d4f;
   --accent-hover: #8f6338;
+  --accent-2: #8f6338;
+  --accent-3: #e0b98a;
   --card: #f7f3ed;
+  --glow: rgba(176, 125, 79, 0.12);
 }
 
 [data-theme="dark"] {
   --background: #1e1c1a;
-  --navbar-bg: #252220;
+  --navbar-bg: rgba(37, 34, 32, 0.85);
   --card-bg: #2c2927;
   --foreground: #f0ece6;
   --text-secondary: #9e9890;
   --border: #3a3632;
   --accent: #c8964f;
   --accent-hover: #e0a85a;
+  --accent-2: #e0a85a;
+  --accent-3: #e0b98a;
   --card: #2c2927;
+  --glow: rgba(200, 150, 79, 0.12);
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
     margin: 0;
     font-family: var(--font-inter), system-ui, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
 
     /* Textura de grano sutil */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
@@ -41,28 +52,121 @@
     font-family: var(--font-playfair), serif;
   }
 
-  *, *::before, *::after {
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  ::selection {
+    background: var(--accent);
+    color: #fff;
   }
+}
+
+/* Texto con degradé animado */
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 6s linear infinite;
+}
+
+@keyframes gradientShift {
+  to { background-position: 200% center; }
+}
+
+/* Grilla de fondo del hero */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+}
+
+/* Íconos negros que se invierten en modo oscuro */
+[data-theme="dark"] .invert-on-dark {
+  filter: invert(1);
+}
+
+/* Manchas de color flotantes */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.2;
+  animation: float 14s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.08); }
+  66% { transform: translate(-30px, 25px) scale(0.95); }
+}
+
+/* Cinta infinita de tecnologías */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Texto que gira en círculo */
+.spin-slow {
+  animation: spin 18s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Palabra que cambia en el hero */
+@keyframes wordIn {
+  from { opacity: 0; transform: translateY(60%); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.word-in {
+  display: inline-block;
+  animation: wordIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Aparición al hacer scroll (ver components/Reveal.tsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 /* Animación de entrada */
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-up {
-  animation: fadeUp 0.6s ease forwards;
-}
+.animate-fade-up { animation: fadeUp 0.7s ease both; }
+.animate-fade-up-delay-1 { animation: fadeUp 0.7s ease 0.1s both; }
+.animate-fade-up-delay-2 { animation: fadeUp 0.7s ease 0.2s both; }
+.animate-fade-up-delay-3 { animation: fadeUp 0.7s ease 0.3s both; }
+.animate-fade-up-delay-4 { animation: fadeUp 0.7s ease 0.4s both; }
 
-.animate-fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards; animation-name: fadeUp; animation-duration: 0.6s; animation-timing-function: ease; }
-.animate-fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; animation-name: fadeUp; animation-duration: 0.6s; animation-timing-function: ease; }
-.animate-fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards; animation-name: fadeUp; animation-duration: 0.6s; animation-timing-function: ease; }
-.animate-fade-up-delay-4 { animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards; animation-name: fadeUp; animation-duration: 0.6s; animation-timing-function: ease; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
+}
